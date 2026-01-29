@@ -8,7 +8,7 @@ struct ContentView: View {
                 Text(context.date.formatted(.dateTime.minute(.twoDigits)))
                 Text(context.date.formatted(.dateTime.second(.twoDigits)))
             }
-            .font(.system(size: 200, design: .monospaced))
+            .font(.system(size: 210, weight: .bold, design: .monospaced))
         }
     }
 }
