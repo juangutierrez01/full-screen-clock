@@ -4,23 +4,29 @@ struct ContentView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     var body: some View {
-        let isHorizontal = horizontalSizeClass == .regular
-        let layout = isHorizontal ? AnyLayout(HStackLayout()) : AnyLayout(VStackLayout())
-        let digitSize = isHorizontal ? 190.0 : 230.0
+        let isLandscape = horizontalSizeClass == .regular
+        let layout = isLandscape
+            ? AnyLayout(HStackLayout(alignment: .firstTextBaseline))
+            : AnyLayout(VStackLayout(spacing: -40))
+        let defaultSize = 250.0
+        let defaultWeight = Font.Weight.regular
+        let defaultDesign = Font.Design.rounded
 
         TimelineView(.periodic(from: Date(), by: 0.01)) { context in
             layout {
                 Text(context.date.formatted(.dateTime.hour(.twoDigits(amPM: .omitted))))
-                if isHorizontal {
-                    Text(":").font(.system(size: 120))
+                if isLandscape {
+                    Text(":")
+                        .font(.system(size: 120))
+                        .offset(y: -40)
+                        .padding(.horizontal, -10)
                 }
                 Text(context.date.formatted(.dateTime.minute(.twoDigits)))
-                if isHorizontal {
-                    Text(":").font(.system(size: 120))
-                }
                 Text(context.date.formatted(.dateTime.second(.twoDigits)))
+                    .font(.system(size: isLandscape ? 140 : defaultSize, weight: defaultWeight, design: defaultDesign))
+                    .monospacedDigit()
             }
-            .font(.system(size: digitSize, weight: .bold, design: .monospaced))
+            .font(.system(size: defaultSize, weight: defaultWeight, design: defaultDesign))
         }
     }
 }
