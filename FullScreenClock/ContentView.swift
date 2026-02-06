@@ -13,6 +13,14 @@ enum Fonts {
     ).monospacedDigit()
 }
 
+enum DebugModes: Int {
+    case regular
+    case millisecond
+    case random
+    case fixed
+}
+let debugMode = DebugModes.regular.rawValue
+
 struct ContentView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
@@ -22,7 +30,7 @@ struct ContentView: View {
             ? AnyLayout(HStackLayout(alignment: .firstTextBaseline))
             : AnyLayout(VStackLayout(spacing: -40))
 
-        TimelineView(.periodic(from: Date(), by: 0.01)) { context in
+        TimelineView(.periodic(from: Date(), by: [0.01, 0.01, 0.5, 0.01][debugMode])) { context in
             layout {
                 HoursView(date: context.date)
                 if isLandscape {
@@ -38,7 +46,12 @@ struct ContentView: View {
 struct HoursView: View {
     let date: Date
     var body: some View {
-        Text(date.formatted(.dateTime.hour(.twoDigits(amPM: .omitted))))
+        [
+            Text(date.formatted(.dateTime.hour(.twoDigits(amPM: .omitted)))),
+            Text(date.formatted(.dateTime.secondFraction(.fractional(2)))),
+            Text("\(Int.random(in: 0...2))\(Int.random(in: 0...9))"),
+            Text("01"),
+        ][debugMode]
             .font(Fonts.regular)
     }
 }
@@ -46,7 +59,12 @@ struct HoursView: View {
 struct MinutesView: View {
     let date: Date
     var body: some View {
-        Text(date.formatted(.dateTime.minute(.twoDigits)))
+        [
+            Text(date.formatted(.dateTime.minute(.twoDigits))),
+            Text(date.formatted(.dateTime.secondFraction(.fractional(2)))),
+            Text("\(Int.random(in: 0...6))\(Int.random(in: 0...9))"),
+            Text("01"),
+        ][debugMode]
             .font(Fonts.regular)
     }
 }
@@ -55,7 +73,12 @@ struct SecondsView: View {
     let date: Date
     let isLandscape: Bool
     var body: some View {
-        Text(date.formatted(.dateTime.second(.twoDigits)))
+        [
+            Text(date.formatted(.dateTime.second(.twoDigits))),
+            Text(date.formatted(.dateTime.secondFraction(.fractional(2)))),
+            Text("\(Int.random(in: 0...6))\(Int.random(in: 0...9))"),
+            Text("01"),
+        ][debugMode]
             .font(isLandscape ? Fonts.small : Fonts.regular)
     }
 }
