@@ -1,5 +1,18 @@
 import SwiftUI
 
+enum Fonts {
+    static let regular = Font.system(
+        size: 240,
+        weight: .regular,
+        design: .rounded
+    ).monospacedDigit()
+    static let small = Font.system(
+        size: 140,
+        weight: .medium,
+        design: .rounded
+    ).monospacedDigit()
+}
+
 struct ContentView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
@@ -8,25 +21,51 @@ struct ContentView: View {
         let layout = isLandscape
             ? AnyLayout(HStackLayout(alignment: .firstTextBaseline))
             : AnyLayout(VStackLayout(spacing: -40))
-        let defaultSize = 240.0
-        let defaultWeight = Font.Weight.regular
-        let defaultDesign = Font.Design.rounded
 
         TimelineView(.periodic(from: Date(), by: 0.01)) { context in
             layout {
-                Text(context.date.formatted(.dateTime.hour(.twoDigits(amPM: .omitted))))
+                HoursView(date: context.date)
                 if isLandscape {
-                    Text(":")
-                        .offset(y: -20)
-                        .padding(.horizontal, -20)
+                    ColonView()
                 }
-                Text(context.date.formatted(.dateTime.minute(.twoDigits)))
-                Text(context.date.formatted(.dateTime.second(.twoDigits)))
-                    .font(.system(size: isLandscape ? 140 : defaultSize, weight: defaultWeight, design: defaultDesign))
+                MinutesView(date: context.date)
+                SecondsView(date: context.date, isLandscape: isLandscape)
             }
-            .font(.system(size: defaultSize, weight: defaultWeight, design: defaultDesign))
-            .monospacedDigit()
         }
+    }
+}
+
+struct HoursView: View {
+    let date: Date
+    var body: some View {
+        Text(date.formatted(.dateTime.hour(.twoDigits(amPM: .omitted))))
+            .font(Fonts.regular)
+    }
+}
+
+struct MinutesView: View {
+    let date: Date
+    var body: some View {
+        Text(date.formatted(.dateTime.minute(.twoDigits)))
+            .font(Fonts.regular)
+    }
+}
+
+struct SecondsView: View {
+    let date: Date
+    let isLandscape: Bool
+    var body: some View {
+        Text(date.formatted(.dateTime.second(.twoDigits)))
+            .font(isLandscape ? Fonts.small : Fonts.regular)
+    }
+}
+
+struct ColonView: View {
+    var body: some View {
+        Text(":")
+            .font(Fonts.regular)
+            .offset(y: -20)
+            .padding(.horizontal, -20)
     }
 }
 
