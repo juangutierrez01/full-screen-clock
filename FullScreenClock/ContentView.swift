@@ -11,6 +11,7 @@ enum Fonts {
         weight: .medium,
         design: .rounded
     )
+    static let monospaced = regular.monospacedDigit()
 }
 
 enum DebugModes: Int {
@@ -60,7 +61,7 @@ struct HoursView: View {
             Text("\(Int.random(in: 0...2))\(Int.random(in: 0...9))"),
             Text("00"),
         ][debugMode]
-            .font(isLandscape ? Fonts.regular : Fonts.regular.monospacedDigit())
+            .font(isLandscape ? Fonts.regular : Fonts.monospaced)
             .frame(width: 292, alignment: isLandscape ? .trailing : .center)
     }
 }
@@ -75,7 +76,7 @@ struct MinutesView: View {
             Text("\(Int.random(in: 0...6))\(Int.random(in: 0...9))"),
             Text("00"),
         ][debugMode]
-            .font(isLandscape ? Fonts.regular : Fonts.regular.monospacedDigit())
+            .font(isLandscape ? Fonts.regular : Fonts.monospaced)
     }
 }
 
@@ -89,7 +90,7 @@ struct SecondsView: View {
             Text("\(Int.random(in: 0...6))\(Int.random(in: 0...9))"),
             Text("00"),
         ][debugMode]
-            .font(isLandscape ? Fonts.small : Fonts.regular.monospacedDigit())
+            .font(isLandscape ? Fonts.small : Fonts.monospaced)
             .frame(width: isLandscape ? 175 : 292, alignment: isLandscape ? .leading : .center)
     }
 }
