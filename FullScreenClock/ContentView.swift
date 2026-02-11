@@ -30,7 +30,7 @@ struct ContentView: View {
             ? AnyLayout(HStackLayout(alignment: .firstTextBaseline))
             : AnyLayout(VStackLayout(spacing: -40))
 
-        TimelineView(.periodic(from: Date(), by: [0.01, 0.01, 0.5, 0.01][debugMode])) { context in
+        TimelineView(.periodic(from: Date(), by: [0.01, 0.0025, 0.05, 0.01][debugMode])) { context in
             layout {
                 HoursView(date: context.date)
                 if isLandscape {
@@ -50,7 +50,7 @@ struct HoursView: View {
             Text(date.formatted(.dateTime.hour(.twoDigits(amPM: .omitted)))),
             Text(date.formatted(.dateTime.secondFraction(.fractional(2)))),
             Text("\(Int.random(in: 0...2))\(Int.random(in: 0...9))"),
-            Text("01"),
+            Text("00"),
         ][debugMode]
             .font(Fonts.regular)
     }
@@ -63,7 +63,7 @@ struct MinutesView: View {
             Text(date.formatted(.dateTime.minute(.twoDigits))),
             Text(date.formatted(.dateTime.secondFraction(.fractional(2)))),
             Text("\(Int.random(in: 0...6))\(Int.random(in: 0...9))"),
-            Text("01"),
+            Text("00"),
         ][debugMode]
             .font(Fonts.regular)
     }
@@ -77,7 +77,7 @@ struct SecondsView: View {
             Text(date.formatted(.dateTime.second(.twoDigits))),
             Text(date.formatted(.dateTime.secondFraction(.fractional(2)))),
             Text("\(Int.random(in: 0...6))\(Int.random(in: 0...9))"),
-            Text("01"),
+            Text("00"),
         ][debugMode]
             .font(isLandscape ? Fonts.small : Fonts.regular)
     }
