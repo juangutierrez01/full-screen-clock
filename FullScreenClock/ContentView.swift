@@ -104,6 +104,21 @@ struct ColonView: View {
     }
 }
 
-#Preview {
+#Preview() {
     ContentView()
+}
+
+#Preview("Portrait", traits: .portrait) {
+    ContentView()
+        .environment(\.horizontalSizeClass, .compact)
+}
+
+#Preview("Landscape Left", traits: .landscapeRight) {
+    ContentView()
+        .environment(\.horizontalSizeClass, .regular)
+}
+
+#Preview("Landscape Right", traits: .landscapeLeft) {
+    ContentView()
+        .environment(\.horizontalSizeClass, .regular)
 }
