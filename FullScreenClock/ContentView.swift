@@ -41,6 +41,12 @@ struct ContentView: View {
             }
             .frame(width: 804, alignment: isLandscape ? .leading : .center)
         }
+        .onAppear {
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
+        .onDisappear {
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
     }
 }
 
