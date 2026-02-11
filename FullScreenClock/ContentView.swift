@@ -5,12 +5,12 @@ enum Fonts {
         size: 240,
         weight: .regular,
         design: .rounded
-    ).monospacedDigit()
+    )
     static let small = Font.system(
         size: 140,
         weight: .medium,
         design: .rounded
-    ).monospacedDigit()
+    )
 }
 
 enum DebugModes: Int {
@@ -32,19 +32,21 @@ struct ContentView: View {
 
         TimelineView(.periodic(from: Date(), by: [0.01, 0.0025, 0.05, 0.01][debugMode])) { context in
             layout {
-                HoursView(date: context.date)
+                HoursView(date: context.date, isLandscape: isLandscape)
                 if isLandscape {
                     ColonView()
                 }
-                MinutesView(date: context.date)
+                MinutesView(date: context.date, isLandscape: isLandscape)
                 SecondsView(date: context.date, isLandscape: isLandscape)
             }
+            .frame(width: 804, alignment: isLandscape ? .leading : .center)
         }
     }
 }
 
 struct HoursView: View {
     let date: Date
+    let isLandscape: Bool
     var body: some View {
         [
             Text(date.formatted(.dateTime.hour(.twoDigits(amPM: .omitted)))),
@@ -52,12 +54,14 @@ struct HoursView: View {
             Text("\(Int.random(in: 0...2))\(Int.random(in: 0...9))"),
             Text("00"),
         ][debugMode]
-            .font(Fonts.regular)
+            .font(isLandscape ? Fonts.regular : Fonts.regular.monospacedDigit())
+            .frame(width: 292, alignment: isLandscape ? .trailing : .center)
     }
 }
 
 struct MinutesView: View {
     let date: Date
+    let isLandscape: Bool
     var body: some View {
         [
             Text(date.formatted(.dateTime.minute(.twoDigits))),
@@ -65,7 +69,7 @@ struct MinutesView: View {
             Text("\(Int.random(in: 0...6))\(Int.random(in: 0...9))"),
             Text("00"),
         ][debugMode]
-            .font(Fonts.regular)
+            .font(isLandscape ? Fonts.regular : Fonts.regular.monospacedDigit())
     }
 }
 
@@ -79,7 +83,8 @@ struct SecondsView: View {
             Text("\(Int.random(in: 0...6))\(Int.random(in: 0...9))"),
             Text("00"),
         ][debugMode]
-            .font(isLandscape ? Fonts.small : Fonts.regular)
+            .font(isLandscape ? Fonts.small : Fonts.regular.monospacedDigit())
+            .frame(width: isLandscape ? 175 : 292, alignment: isLandscape ? .leading : .center)
     }
 }
 
