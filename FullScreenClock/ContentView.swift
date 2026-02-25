@@ -1,17 +1,23 @@
 import SwiftUI
 
 enum Fonts {
-    static let regular = Font.system(
-        size: 240,
-        weight: .regular,
+    static let big = Font.system(
+        size: 242,
+        weight: .medium,
         design: .rounded
     )
     static let small = Font.system(
         size: 140,
-        weight: .medium,
+        weight: .semibold,
         design: .rounded
     )
-    static let monospaced = regular.monospacedDigit()
+    static let monospaced = big.monospacedDigit()
+    static let colon = big.weight(.regular)
+}
+
+enum Kernings {
+    static let big = -6.0
+    static let small = -3.0
 }
 
 enum DebugModes: Int {
@@ -30,7 +36,7 @@ struct ContentView: View {
         let isLandscape = horizontalSizeClass == .regular
         let layout = isLandscape
             ? AnyLayout(HStackLayout(alignment: .firstTextBaseline))
-            : AnyLayout(VStackLayout(spacing: -40))
+            : AnyLayout(VStackLayout(spacing: -50))
 
         TimelineView(.periodic(from: Date(), by: [0.01, 0.0025, 0.05, 0.01, 0.01][debugMode])) { context in
             layout {
@@ -41,7 +47,6 @@ struct ContentView: View {
                 MinutesView(date: context.date, isLandscape: isLandscape)
                 SecondsView(date: context.date, isLandscape: isLandscape)
             }
-            .frame(width: 804, alignment: isLandscape ? .leading : .center)
         }
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = true
@@ -63,8 +68,8 @@ struct HoursView: View {
             Text("11"),
             Text("00"),
         ][debugMode]
-            .font(isLandscape ? Fonts.regular : Fonts.monospaced)
-            .frame(width: 292, alignment: isLandscape ? .trailing : .center)
+            .font(isLandscape ? Fonts.big : Fonts.monospaced)
+            .kerning(Kernings.big)
     }
 }
 
@@ -79,7 +84,8 @@ struct MinutesView: View {
             Text("11"),
             Text("00"),
         ][debugMode]
-            .font(isLandscape ? Fonts.regular : Fonts.monospaced)
+            .font(isLandscape ? Fonts.big : Fonts.monospaced)
+            .kerning(Kernings.big)
     }
 }
 
@@ -95,14 +101,15 @@ struct SecondsView: View {
             Text("00"),
         ][debugMode]
             .font(isLandscape ? Fonts.small : Fonts.monospaced)
-            .frame(width: isLandscape ? 175 : 292, alignment: isLandscape ? .leading : .center)
+            .kerning(isLandscape ? Kernings.small : Kernings.big)
+            .frame(width: isLandscape ? 173 : 294, alignment: isLandscape ? .leading : .center)
     }
 }
 
 struct ColonView: View {
     var body: some View {
         Text(":")
-            .font(Fonts.regular)
+            .font(Fonts.colon)
             .offset(y: -20)
             .padding(.horizontal, -20)
     }
